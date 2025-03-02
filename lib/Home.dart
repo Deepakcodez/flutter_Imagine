@@ -12,8 +12,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String _searchQuery = "Super car in Clouds"; // Default prompt
-
+  String _searchQuery = "Super car in Clouds";
+  int _height = 1000;
+  int _width = 700;
   // Callback function to update the query
   void _updateSearchQuery(String query) {
     setState(() {
@@ -21,8 +22,21 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _updateHeight(int height) {
+    setState(() {
+      _height = height;
+    });
+  }
+
+  void _updateWidth(int width) {
+    setState(() {
+      _width = width;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       body: Container(
         color: const Color.fromARGB(255, 28, 21, 31),
@@ -31,24 +45,35 @@ class _HomeState extends State<Home> {
             Expanded(
               flex: 60,
               child: ImageSection(
-                  prompt: _searchQuery), // Pass query to ImageSection
+                prompt: _searchQuery,
+                height: _height,
+                width:_width,
+              ), // Pass query to ImageSection
             ),
             Padding(
               padding: const EdgeInsets.all(15),
               child: SearchSection(
-                  onQueryChanged: _updateSearchQuery), // Pass callback
+                onQueryChanged: _updateSearchQuery,
+              ), // Pass callback
             ),
-            Expanded(flex: 20, child: DimentionButtons()),
-            Expanded(
-              flex: 15,
-              child: Container(
-                width: double.maxFinite,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: Buttons(),
+            if (!isKeyboardOpen)
+              Expanded(
+                  flex: 20,
+                  child: DimentionButtons(
+                    height : _height,
+                    onHeightChanged: _updateHeight,
+                  )),
+            if (!isKeyboardOpen)
+              Expanded(
+                flex: 15,
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Buttons(),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

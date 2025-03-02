@@ -20,7 +20,7 @@ class _SearchSectionState extends State<SearchSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.maxFinite,
       child: SearchBar(
         hintText: "Enter What you can Imagine",
